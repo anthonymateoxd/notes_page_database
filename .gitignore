@@ -1,0 +1,33 @@
+# Ignorar archivos del sistema operativo
+.DS_Store
+Thumbs.db
+
+# Archivos temporales de VSCode
+.vscode/
+*.code-workspace
+
+# Archivos temporales comunes
+*.log
+*.tmp
+*.swp
+*.swo
+
+# Entornos virtuales (por si llegas a usar Python)
+venv/
+env/
+
+# Configuración local de Docker
+**/.env
+.env
+.env.*
+
+# Archivos de volúmenes o cachés de Docker
+docker-compose.override.yml
+**/.docker/
+
+# Node/npm caches (por si llegan a quedar en raíz)
+node_modules/
+
+# Salidas de compilación que no estén dentro de frontend/backend
+dist/
+build/
