@@ -1,0 +1,6 @@
+[submodule "notes_page_backend"]
+	path = notes_page_backend
+	url = https://github.com/anthonymateoxd/notes_page_backend.git
+[submodule "notes_page_frontend"]
+	path = notes_page_frontend
+	url = https://github.com/anthonymateoxd/notes_page_frontend.git
