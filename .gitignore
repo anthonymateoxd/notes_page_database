@@ -12,15 +12,6 @@ Thumbs.db
 *.swp
 *.swo
 
-# Entornos virtuales (por si llegas a usar Python)
-venv/
-env/
-
-# Configuración local de Docker
-**/.env
-.env
-.env.*
-
 # Archivos de volúmenes o cachés de Docker
 docker-compose.override.yml
 **/.docker/
