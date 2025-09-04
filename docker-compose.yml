@@ -11,7 +11,7 @@ services:
     depends_on:
       - backend
     networks:
-      - app-network
+      - app_network
 
   backend:
     build:
@@ -29,7 +29,7 @@ services:
     depends_on:
       - mysql
     networks:
-      - app-network
+      - app_network
 
   mysql:
     image: mysql:8.0
