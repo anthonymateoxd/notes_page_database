@@ -4,3 +4,9 @@
 [submodule "notes_page_frontend"]
 	path = notes_page_frontend
 	url = https://github.com/anthonymateoxd/notes_page_frontend.git
+[submodule "nginx_server"]
+	path = nginx_server
+	url = https://github.com/anthonymateoxd/nginx_server.git
+[submodule "notes_page_ms_header"]
+	path = notes_page_ms_header
+	url = https://github.com/anthonymateoxd/notes_page_ms_header.git

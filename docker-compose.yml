@@ -1,36 +1,5 @@
-version: '3.8'
-
 services:
-  frontend:
-    build:
-      context: ./notes_page_frontend # Ruta a la carpeta del frontend
-      dockerfile: Dockerfile
-    container_name: frontend-container
-    ports:
-      - '8080:80' # Mapea el puerto 80 del host al 80 del contenedor
-    depends_on:
-      - backend
-    networks:
-      - app-network
-
-  backend:
-    build:
-      context: ./notes_page_backend # Ruta a la carpeta del backend
-      dockerfile: Dockerfile
-    container_name: backend-container
-    ports:
-      - '4000:4000' # Mapea el puerto 4000 del host al 4000 del contenedor
-    environment:
-      - NODE_ENV=production
-      - DB_HOST=mysql
-      - DB_USER=guest
-      - DB_PASSWORD=guest
-      - DB_NAME=app
-    depends_on:
-      - mysql
-    networks:
-      - app-network
-
+  # 1. MySQL database
   mysql:
     image: mysql:8.0
     container_name: mysql_app
@@ -47,8 +16,77 @@ services:
     networks:
       - app-network
 
+  # 2. Backend API
+  backend:
+    build:
+      context: ./notes_page_backend
+      dockerfile: Dockerfile
+    container_name: backend-container
+    restart: always
+    ports:
+      - '4000:4000'
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=mysql
+      - DB_USER=guest
+      - DB_PASSWORD=guest
+      - DB_NAME=app
+    depends_on:
+      - mysql
+    networks:
+      - app-network
+
+  # 1. React home page (main app)
+  react-home:
+    build:
+      context: ./notes_page_frontend
+    image: react-home:latest
+    container_name: react-home
+    working_dir: /app
+    command: npm run preview -- --host 0.0.0.0 --port 5000
+    ports:
+      - '5000:5000'
+    volumes:
+      - react_home_build:/app/dist
+    networks:
+      - app-network
+
+  # 2. React header microfrontend
+  react-header:
+    build:
+      context: ./notes_page_ms_header
+    image: react-header:latest
+    container_name: react-header
+    working_dir: /app
+    command: npm run preview -- --host 0.0.0.0 --port 5003
+    ports:
+      - '5003:5003'
+    volumes:
+      - react_header_build:/app/dist
+    networks:
+      - app-network
+
+  # 3. Nginx server
+  nginx:
+    build:
+      context: ./nginx_server
+    image: nginx-server:latest
+    container_name: nginx-server
+    ports:
+      - '8080:80'
+    volumes:
+      - react_home_build:/usr/share/nginx/html/home
+      - react_header_build:/usr/share/nginx/html/header
+    depends_on:
+      - react-home
+      - react-header
+    networks:
+      - app-network
+
 volumes:
   mysql_data:
+  react_home_build:
+  react_header_build:
 
 networks:
   app-network:
